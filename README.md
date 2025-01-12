@@ -1,4 +1,4 @@
-# PCB
+# OpenCaffea
 C++ Product Design Tool
 
 # Planned Features
