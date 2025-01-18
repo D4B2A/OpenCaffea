@@ -1,8 +1,5 @@
 #include<simulation.h>
 
-class bus{
-    public:
-
-    private:
-
-};
+bool bus::operator==(bus& other){
+    return this->id==other.id;
+}

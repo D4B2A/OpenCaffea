@@ -8,43 +8,56 @@ public:
     std::list<model> models;
     std::list<bus> buses;
 
-    bool simulate(simulationConfig config){
+    int simulate(simulationConfig config){
         long totalSteps = config.stopTime/config.stepSize;
 
-        analyseSimulation();
+        std::list<model*> supermodels = analyseSimulation();
 
         for (long i = 0; i < totalSteps; i++)
         {
-            precalculate();
-            //iterate over each remaining model
-
-            //start resoving step by step
-            std::list<modelRef> resolvedModels = resolve();
+            for (auto currentModel = supermodels.begin(); currentModel!=supermodels.end();++currentModel)
+            {
+                (*currentModel)->calculate();
+            }
+            
         }
         
     }
     
 private:
-    std::list<supermodel> supermodels;
 
-    bool precalculate(){
-        //  a. Check for two same buses
-        //  b. Check for one same buses    
-    }
-    std::list<modelRef> resolve(){}
-
-    std::list<modelRef> analyseSimulation(){
-        auto currentBus = buses.begin(); 
-        for (size_t i = 0; i < buses.size(); i++)
+    /// @brief 
+    /// @return
+    std::list<model*> analyseSimulation(){
+        std::list<busNet> matchingModels;
+         
+        for (auto currentBus = buses.begin(); currentBus != buses.end(); ++currentBus)
         {
             //iterate over each bus searching for two components with two same busses
-            for (size_t n = 0; n < models.size(); n++)
+            //initiate iterator for models
+            std::list<model*> tempModels;    
+            for (auto currentModel = models.begin(); currentModel!=models.end(); ++currentModel)
             {
                 //select all buses with one matching bus
                 //--> Save for later
+                auto connectedBusses = currentModel->getConnectedBusses();
+                for (auto currentTestBus = connectedBusses.begin(); currentTestBus != connectedBusses.end(); ++currentTestBus) {
+                    if((**currentTestBus)==(*currentBus)) {
+                        tempModels.push_back(&(*currentModel));
+                        break;
+                    }
+                }           
             }
-            currentBus++;   
+            //Save model list
+            matchingModels.push_back(busNet(&(*currentBus), tempModels));   
         }
-        
+        //true if current loop achieved progress. Reset to false at the start of each loop
+        bool progress = true;
+        while(progress){
+            progress = false;
+            for (auto currentBusNet = matchingModels.begin(); currentBusNet != matchingModels.end(); ++currentBusNet) {
+            }
+        }
+        free(&progress);
     }
 };
