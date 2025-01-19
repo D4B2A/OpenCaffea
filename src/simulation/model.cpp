@@ -11,8 +11,11 @@ std::list<bus*> model::getConnectedBusses() {
     return this->connectedBusses;
 }
 
-void model::calculate() {
+float model::calculate(bool calculateChange) {
+    float change = 0.0;
+    change += this->calculate_self(calculateChange);
     for(auto currentSubModel = this->subModels.begin();currentSubModel!=this->subModels.end();++currentSubModel) {
-        (*currentSubModel)->calculate();
+        change += (*currentSubModel)->calculate(calculateChange);
     }
+    return change;
 }

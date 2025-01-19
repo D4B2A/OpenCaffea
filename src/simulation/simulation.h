@@ -8,8 +8,9 @@ class bus {
 class model {
     private:
         std::list<bus*> connectedBusses;
+        float calculate_self(bool);
     public:
-        void calculate();
+        float calculate(bool);
         std::list<model*> subModels;
         std::list<bus*> getConnectedBusses();
 
@@ -18,6 +19,7 @@ class model {
 struct simulationConfig{
     float stopTime;
     float stepSize;
+    float multipassAccuracy;
 };
 
 struct busNet {
