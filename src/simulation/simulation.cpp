@@ -1,19 +1,20 @@
 #include <iterator>
 #include <limits>
 #include <list>
-#include <simulation.h>
+#include "simulation.h"
 
-class simulation
+
+class Simulation
 {
 public:
-    std::list<model> models;
-    std::list<bus> buses;
+    std::list<Model> models;
+    std::list<Bus> buses;
 
     int simulate(simulationConfig config)
     {
         long totalSteps = config.stopTime / config.stepSize;
 
-        std::list<model *> supermodels = analyseSimulation();
+        std::list<Model *> supermodels = analyseSimulation();
 
         for (long i = 0; i < totalSteps; i++)
         {
@@ -41,7 +42,7 @@ public:
     }
 
 private:
-    std::list<model *> analyseSimulation()
+    std::list<Model *> analyseSimulation()
     {
         std::list<busNet> matchingModels;
 
@@ -49,7 +50,7 @@ private:
         {
             // iterate over each bus searching for two components with two same busses
             // initiate iterator for models
-            std::list<model *> tempModels;
+            std::list<Model *> tempModels;
             for (auto currentModel = models.begin(); currentModel != models.end(); ++currentModel)
             {
                 // select all buses with one matching bus
@@ -65,7 +66,8 @@ private:
                 }
             }
             // Save model list
-            matchingModels.push_back(busNet(&(*currentBus), tempModels));
+            busNet pushBusNet {&(*currentBus), tempModels};
+            matchingModels.push_back(pushBusNet);
         }
         // true if current loop achieved progress. Reset to false at the start of each loop
         bool progress = true;

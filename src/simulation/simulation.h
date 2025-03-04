@@ -1,18 +1,18 @@
-class bus {
+class Bus {
     private:
         int id;
     public:
-        bool operator==(bus& other);
+        bool operator==(Bus& other);
 
 };
-class model {
+class Model {
     private:
-        std::list<bus*> connectedBusses;
+        std::list<Bus*> connectedBusses;
         float calculate_self(bool);
     public:
         float calculate(bool);
-        std::list<model*> subModels;
-        std::list<bus*> getConnectedBusses();
+        std::list<Model*> subModels;
+        std::list<Bus*> getConnectedBusses();
 
 };
 
@@ -23,6 +23,6 @@ struct simulationConfig{
 };
 
 struct busNet {
-    bus* bus;
-    std::list<model*> models;
+    Bus* bus;
+    std::list<Model*> models;
 };
