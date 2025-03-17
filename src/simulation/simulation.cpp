@@ -24,7 +24,7 @@ public:
                 while (achievedChange > config.multipassAccuracy)
                 {
                     achievedChange = 0.0;
-                    for (auto currentModel = supermodels.begin(); currentModel != supermodels.end(); ++currentModel)
+                    for (std::iterator<Model*> currentModel = supermodels.begin(); currentModel != supermodels.end(); ++currentModel)
                     {
                         (*currentModel)->calculate(true);
                     }
